@@ -1,0 +1,20 @@
+{
+  "name": "scroll-linked-canvas-sequence",
+  "version": "1.0.0",
+  "description": "High-performance scroll-linked image sequence animation on HTML5 Canvas",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "canvas",
+    "scroll-driven",
+    "image-sequence",
+    "apple-style",
+    "video-frames",
+    "scrollytelling"
+  ],
+  "author": "",
+  "license": "MIT"
+}

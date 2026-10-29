@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Scroll-Linked Canvas Sequence | Apple-Style Product Scrollytelling</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="loading-state">
+
+  <!-- PRELOADER & FRAME EXTRACTION SCREEN -->
+  <div id="loader" class="loader-overlay" aria-live="polite">
+    <div class="loader-card">
+      <div class="loader-icon-wrap">
+        <svg class="loader-spinner" viewBox="0 0 50 50">
+          <circle class="spinner-bg" cx="25" cy="25" r="20"></circle>
+          <circle id="spinner-progress" class="spinner-val" cx="25" cy="25" r="20"></circle>
+        </svg>
+        <span id="loader-percent" class="loader-percent-num">0%</span>
+      </div>
+      <h2 class="loader-title">Decoding Image Sequence</h2>
+      <p id="loader-status" class="loader-status-text">Initializing hardware decoder...</p>
+      <div class="loader-bar-bg">
+        <div id="loader-bar-fill" class="loader-bar-fill"></div>
+      </div>
+      <div class="loader-meta">
+        <span>Target: 150 High-Res Frames</span>
+        <span>•</span>
+        <span>Zero-Stutter GPU Memory Cache</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOP NAVIGATION BAR -->
+  <header class="app-header">
+    <div class="header-brand">
+      <div class="brand-badge"></div>
+      <div class="brand-info">
+        <span class="brand-name">AURELIA 1888</span>
+        <span class="brand-sub">CHRONOGRAPH EXPLODED VIEW</span>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button id="btn-fit" class="hud-btn" title="Toggle Aspect Fit (Contain / Cover) [F]">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M15 3h6v6M9 21H3v-6M21 9l-7 7M3 15l7-7"/></svg>
+        <span id="fit-label">Contain</span>
+      </button>
+
+      <button id="btn-smooth" class="hud-btn active" title="Toggle Smooth Lerp Dampening [S]">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke="width="2"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12s4.477 10 10 10"/><path d="M13 2.05A10 10 0 1 1 2.05 13"/></svg>
+        <span id="smooth-label">Lerp: On</span>
+      </button>
+
+      <button id="btn-autoplay" class="hud-btn" title="Auto Preview Animation Loop [Space]">
+        <svg class="btn-icon play-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <span id="autoplay-label">Play</span>
+      </button>
+
+      <button id="btn-custom-media" class="hud-btn" title="Load Custom Video or Image Sequence">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke="width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <span>Media</span>
+      </button>
+
+      <button id="btn-export" class="hud-btn" title="Export Extracted Frames">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke="width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>Export</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN SCROLL TRACK CONTAINER -->
+  <main id="scroll-track" class="scroll-track" style="--track-height: 500vh;">
+    <!-- STICKY VIEWPORT STAGE -->
+    <div id="sticky-stage" class="sticky-stage">
+      
+      <!-- BACKGROUND AMBIENT GLOW -->
+      <div class="stage-ambient-glow"></div>
+
+      <!-- CANVAS ELEMENT -->
+      <canvas id="sequence-canvas" class="sequence-canvas" aria-label="Interactive scroll linked watch animation sequence"></canvas>
+
+      <!-- NARRATIVE STORY CARDS (FADE IN/OUT BASED ON SCROLL) -->
+      <div id="story-layer" class="story-layer" aria-live="polite">
+        
+        <!-- CARD 1: ASSEMBLED HERO -->
+        <article class="story-card" data-start="0.00" data-end="0.18">
+          <div class="card-pill">01 / CALIBRE SERIES</div>
+          <h1 class="card-title">Aurelia Chrono 1888</h1>
+          <p class="card-desc">
+            Hand-assembled horology crafted for absolute temporal precision. Scroll downward to deconstruct each individual component in real time.
+          </p>
+          <div class="card-badges">
+            <span class="badge">316L Surgical Steel</span>
+            <span class="badge">Automatic Mechanical</span>
+            <span class="badge">100M Water Proof</span>
+          </div>
+          <div class="card-hint">
+            <span class="mouse-icon"></span>
+            <span>Scroll down to disassemble</span>
+          </div>
+        </article>
+
+        <!-- CARD 2: PINS & STRAP RELEASE -->
+        <article class="story-card card-right" data-start="0.22" data-end="0.42">
+          <div class="card-pill">02 / CASING INTEGRITY</div>
+          <h2 class="card-title">Precision Lug Separation</h2>
+          <p class="card-desc">
+            Dual micro-engineered spring bars release the full-grain calfskin strap from the hand-polished satin lugs with frictionless tolerance.
+          </p>
+          <div class="card-stats">
+            <div class="stat-col">
+              <span class="stat-num">42<small>mm</small></span>
+              <span class="stat-label">Diameter</span>
+            </div>
+            <div class="stat-col">
+              <span class="stat-num">22<small>mm</small></span>
+              <span class="stat-label">Lug Gauge</span>
+            </div>
+            <div class="stat-col">
+              <span class="stat-num">11.8<small>mm</small></span>
+              <span class="stat-label">Slim Profile</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- CARD 3: CRYSTAL & BEZEL -->
+        <article class="story-card card-left" data-start="0.46" data-end="0.66">
+          <div class="card-pill">03 / OPTICAL DEFENSE</div>
+          <h2 class="card-title">Double-Domed Sapphire</h2>
+          <p class="card-desc">
+            Curved anti-reflective sapphire crystal unseats from the compression gasket, hovering above the matte-black dial with luminescent markers.
+          </p>
+          <div class="card-stats">
+            <div class="stat-col">
+              <span class="stat-num">9.0</span>
+              <span class="stat-label">Mohs Hardness</span>
+            </div>
+            <div class="stat-col">
+              <span class="stat-num">99.8<small>%</small></span>
+              <span class="stat-label">Transmittance</span>
+            </div>
+            <div class="stat-col">
+              <span class="stat-num">AR</span>
+              <span class="stat-label">Dual Coating</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- CARD 4: THE MOVEMENT -->
+        <article class="story-card card-right" data-start="0.70" data-end="0.90">
+          <div class="card-pill">04 / THE SKELETON CALIBRE</div>
+          <h2 class="card-title">28,800 VPH Escapement</h2>
+          <p class="card-desc">
+            The beating balance wheel, escapement gear, and mainspring barrel suspend in spatial harmony. Zero friction jewel bearings ensure 42-hour autonomy.
+          </p>
+          <div class="card-stats">
+            <div class="stat-col">
+              <span class="stat-num">28</span>
+              <span class="stat-label">Ruby Jewels</span>
+            </div>
+            <div class="stat-col">
+              <span class="stat-num">4<small>Hz</small></span>
+              <span class="stat-label">Beat Frequency</span>
+            </div>
+            <div class="stat-col">
+              <span class="stat-num">42<small>h</small></span>
+              <span class="stat-label">Power Reserve</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- CARD 5: FINALE & REASSEMBLE -->
+        <article class="story-card card-center" data-start="0.93" data-end="1.00">
+          <div class="card-pill">05 / MASTER ASSEMBLY</div>
+          <h2 class="card-title">180 Components. One Vision.</h2>
+          <p class="card-desc">
+            Full kinematic deconstruction complete. Scroll upward to watch the components lock into structural unity, or export the image sequence.
+          </p>
+          <div class="card-cta-group">
+            <button id="btn-rewind" class="cta-btn primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+              <span>Scroll to Top</span>
+            </button>
+            <button id="btn-export-quick" class="cta-btn secondary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Download Frames</span>
+            </button>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- BOTTOM FLOATING HUD CONTROLS -->
+      <footer class="app-hud">
+        <div class="hud-top-bar">
+          <!-- SCRUBBER PROGRESS TRACK -->
+          <div id="scrub-container" class="scrub-track-wrap" title="Drag to scrub sequence">
+            <div class="scrub-track">
+              <div id="scrub-fill" class="scrub-fill"></div>
+              <div id="scrub-thumb" class="scrub-thumb"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hud-bottom-bar">
+          <div class="hud-data-group">
+            <div class="hud-pill">
+              <span class="hud-tag">FRAME</span>
+              <span id="hud-frame-num" class="hud-value">000 / 000</span>
+            </div>
+            <div class="hud-pill">
+              <span class="hud-tag">SCROLL</span>
+              <span id="hud-scroll-pct" class="hud-value">0.0%</span>
+            </div>
+            <div class="hud-pill desktop-only">
+              <span class="hud-tag">TIME</span>
+              <span id="hud-time-val" class="hud-value">0.00s</span>
+            </div>
+            <div class="hud-pill desktop-only">
+              <span class="hud-tag">FPS</span>
+              <span id="hud-fps-val" class="hud-value">60</span>
+            </div>
+          </div>
+
+          <div class="hud-track-length-group">
+            <span class="hud-tag">LENGTH</span>
+            <button class="track-btn" data-height="300">3x</button>
+            <button class="track-btn active" data-height="500">5x</button>
+            <button class="track-btn" data-height="800">8x</button>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- CUSTOM MEDIA MODAL -->
+  <dialog id="media-modal" class="app-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Custom Sequence Source</h3>
+        <button id="modal-close" class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-text">Load your own video (MP4/WebM) or folder of sequential images to drive the canvas.</p>
+        
+        <div class="drop-zone" id="drop-zone">
+          <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242M12 12v9m-4-4 4 4 4-4"/></svg>
+          <p><strong>Click to browse</strong> or drag & drop video / images</p>
+          <span class="drop-sub">Supports .mp4, .webm, or multiple .webp, .png, .jpg files</span>
+          <input type="file" id="file-input" accept="video/mp4,video/webm,image/*" multiple hidden>
+        </div>
+
+        <div class="form-row">
+          <label for="sampling-density">Sampled Frame Count (for video):</label>
+          <select id="sampling-density" class="select-input">
+            <option value="90">90 Frames (Super Fast Loading)</option>
+            <option value="150" selected>150 Frames (Optimal Balance)</option>
+            <option value="240">240 Frames (Ultra-Smooth 60fps)</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <button id="btn-reload-default" class="btn-outline">Reset to Aurelia Watch Video</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- EXPORT FRAMES MODAL -->
+  <dialog id="export-modal" class="app-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Export Image Sequence</h3>
+        <button id="export-modal-close" class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-text">Download the current frame snapshot or batch export all decoded frames.</p>
+        <div class="export-preview-box">
+          <canvas id="export-preview-canvas"></canvas>
+          <span id="export-frame-index" class="export-tag">Current Frame #000</span>
+        </div>
+        <div class="modal-actions-grid">
+          <button id="btn-export-current" class="cta-btn primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Download Current Frame (PNG)</span>
+          </button>
+          <button id="btn-export-all" class="cta-btn secondary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+            <span>Batch Download Sequence</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
