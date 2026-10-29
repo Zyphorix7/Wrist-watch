@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Scroll-Linked Canvas Sequence | Apple-Style Product Scrollytelling</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Scroll-Linked Canvas Sequence | Fullscreen Interactive Watch</title>
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,13 +45,13 @@
     </div>
 
     <div class="header-actions">
-      <button id="btn-fit" class="hud-btn" title="Toggle Aspect Fit (Contain / Cover) [F]">
+      <button id="btn-fit" class="hud-btn" title="Toggle Aspect Fit (Cover / Contain) [F]">
         <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M15 3h6v6M9 21H3v-6M21 9l-7 7M3 15l7-7"/></svg>
-        <span id="fit-label">Contain</span>
+        <span id="fit-label">Cover</span>
       </button>
 
       <button id="btn-smooth" class="hud-btn active" title="Toggle Smooth Lerp Dampening [S]">
-        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke="width="2"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12s4.477 10 10 10"/><path d="M13 2.05A10 10 0 1 1 2.05 13"/></svg>
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12s4.477 10 10 10"/><path d="M13 2.05A10 10 0 1 1 2.05 13"/></svg>
         <span id="smooth-label">Lerp: On</span>
       </button>
 
@@ -61,12 +61,12 @@
       </button>
 
       <button id="btn-custom-media" class="hud-btn" title="Load Custom Video or Image Sequence">
-        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke="width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         <span>Media</span>
       </button>
 
       <button id="btn-export" class="hud-btn" title="Export Extracted Frames">
-        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke="width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         <span>Export</span>
       </button>
     </div>
@@ -80,119 +80,8 @@
       <!-- BACKGROUND AMBIENT GLOW -->
       <div class="stage-ambient-glow"></div>
 
-      <!-- CANVAS ELEMENT -->
+      <!-- FULLSCREEN CANVAS ELEMENT -->
       <canvas id="sequence-canvas" class="sequence-canvas" aria-label="Interactive scroll linked watch animation sequence"></canvas>
-
-      <!-- NARRATIVE STORY CARDS (FADE IN/OUT BASED ON SCROLL) -->
-      <div id="story-layer" class="story-layer" aria-live="polite">
-        
-        <!-- CARD 1: ASSEMBLED HERO -->
-        <article class="story-card" data-start="0.00" data-end="0.18">
-          <div class="card-pill">01 / CALIBRE SERIES</div>
-          <h1 class="card-title">Aurelia Chrono 1888</h1>
-          <p class="card-desc">
-            Hand-assembled horology crafted for absolute temporal precision. Scroll downward to deconstruct each individual component in real time.
-          </p>
-          <div class="card-badges">
-            <span class="badge">316L Surgical Steel</span>
-            <span class="badge">Automatic Mechanical</span>
-            <span class="badge">100M Water Proof</span>
-          </div>
-          <div class="card-hint">
-            <span class="mouse-icon"></span>
-            <span>Scroll down to disassemble</span>
-          </div>
-        </article>
-
-        <!-- CARD 2: PINS & STRAP RELEASE -->
-        <article class="story-card card-right" data-start="0.22" data-end="0.42">
-          <div class="card-pill">02 / CASING INTEGRITY</div>
-          <h2 class="card-title">Precision Lug Separation</h2>
-          <p class="card-desc">
-            Dual micro-engineered spring bars release the full-grain calfskin strap from the hand-polished satin lugs with frictionless tolerance.
-          </p>
-          <div class="card-stats">
-            <div class="stat-col">
-              <span class="stat-num">42<small>mm</small></span>
-              <span class="stat-label">Diameter</span>
-            </div>
-            <div class="stat-col">
-              <span class="stat-num">22<small>mm</small></span>
-              <span class="stat-label">Lug Gauge</span>
-            </div>
-            <div class="stat-col">
-              <span class="stat-num">11.8<small>mm</small></span>
-              <span class="stat-label">Slim Profile</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- CARD 3: CRYSTAL & BEZEL -->
-        <article class="story-card card-left" data-start="0.46" data-end="0.66">
-          <div class="card-pill">03 / OPTICAL DEFENSE</div>
-          <h2 class="card-title">Double-Domed Sapphire</h2>
-          <p class="card-desc">
-            Curved anti-reflective sapphire crystal unseats from the compression gasket, hovering above the matte-black dial with luminescent markers.
-          </p>
-          <div class="card-stats">
-            <div class="stat-col">
-              <span class="stat-num">9.0</span>
-              <span class="stat-label">Mohs Hardness</span>
-            </div>
-            <div class="stat-col">
-              <span class="stat-num">99.8<small>%</small></span>
-              <span class="stat-label">Transmittance</span>
-            </div>
-            <div class="stat-col">
-              <span class="stat-num">AR</span>
-              <span class="stat-label">Dual Coating</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- CARD 4: THE MOVEMENT -->
-        <article class="story-card card-right" data-start="0.70" data-end="0.90">
-          <div class="card-pill">04 / THE SKELETON CALIBRE</div>
-          <h2 class="card-title">28,800 VPH Escapement</h2>
-          <p class="card-desc">
-            The beating balance wheel, escapement gear, and mainspring barrel suspend in spatial harmony. Zero friction jewel bearings ensure 42-hour autonomy.
-          </p>
-          <div class="card-stats">
-            <div class="stat-col">
-              <span class="stat-num">28</span>
-              <span class="stat-label">Ruby Jewels</span>
-            </div>
-            <div class="stat-col">
-              <span class="stat-num">4<small>Hz</small></span>
-              <span class="stat-label">Beat Frequency</span>
-            </div>
-            <div class="stat-col">
-              <span class="stat-num">42<small>h</small></span>
-              <span class="stat-label">Power Reserve</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- CARD 5: FINALE & REASSEMBLE -->
-        <article class="story-card card-center" data-start="0.93" data-end="1.00">
-          <div class="card-pill">05 / MASTER ASSEMBLY</div>
-          <h2 class="card-title">180 Components. One Vision.</h2>
-          <p class="card-desc">
-            Full kinematic deconstruction complete. Scroll upward to watch the components lock into structural unity, or export the image sequence.
-          </p>
-          <div class="card-cta-group">
-            <button id="btn-rewind" class="cta-btn primary">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-              <span>Scroll to Top</span>
-            </button>
-            <button id="btn-export-quick" class="cta-btn secondary">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              <span>Download Frames</span>
-            </button>
-          </div>
-        </article>
-
-      </div>
 
       <!-- BOTTOM FLOATING HUD CONTROLS -->
       <footer class="app-hud">

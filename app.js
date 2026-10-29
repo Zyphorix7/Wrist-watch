@@ -1,6 +1,7 @@
 /**
  * Scroll-Linked Image Sequence Canvas Engine
  * High-performance, Retina-crisp frame scrubbing inspired by Apple product presentations.
+ * Clean, distraction-free fullscreen mode for mobile and tablets.
  */
 
 class ScrollCanvasSequence {
@@ -9,7 +10,6 @@ class ScrollCanvasSequence {
     this.canvas = document.getElementById('sequence-canvas');
     this.ctx = this.canvas.getContext('2d', { alpha: false, desynchronized: true });
     this.scrollTrack = document.getElementById('scroll-track');
-    this.storyCards = document.querySelectorAll('.story-card');
     
     // Preloader Elements
     this.loader = document.getElementById('loader');
@@ -36,8 +36,6 @@ class ScrollCanvasSequence {
     this.autoplayLabel = document.getElementById('autoplay-label');
     this.btnCustomMedia = document.getElementById('btn-custom-media');
     this.btnExport = document.getElementById('btn-export');
-    this.btnRewind = document.getElementById('btn-rewind');
-    this.btnExportQuick = document.getElementById('btn-export-quick');
 
     // Modals
     this.mediaModal = document.getElementById('media-modal');
@@ -54,7 +52,7 @@ class ScrollCanvasSequence {
     this.btnExportCurrent = document.getElementById('btn-export-current');
     this.btnExportAll = document.getElementById('btn-export-all');
 
-    // State
+    // State - Default to 'cover' for complete fullscreen immersion
     this.frames = []; // Array of ImageBitmap or HTMLCanvasElement
     this.frameCount = 150;
     this.currentVideoSrc = 'assets/watch-exploded.mp4';
@@ -64,7 +62,7 @@ class ScrollCanvasSequence {
     this.displayedFrame = 0;
     this.lastDrawnIndex = -1;
 
-    this.fitMode = 'contain'; // 'contain' | 'cover'
+    this.fitMode = 'cover'; // 'cover' (fullscreen bleed) | 'contain' (letterbox)
     this.isSmooth = true;
     this.lerpFactor = 0.16;
     
@@ -147,7 +145,6 @@ class ScrollCanvasSequence {
               frameImage = clone;
             }
           } catch (e) {
-            // Fallback for security or codec quirks
             offCtx.drawImage(video, 0, 0);
             const clone = document.createElement('canvas');
             clone.width = offscreen.width;
@@ -163,7 +160,7 @@ class ScrollCanvasSequence {
         }
 
         // Complete extraction
-        this.updateLoader(100, 'Sequence ready. Enjoy silky 60fps scrolling.');
+        this.updateLoader(100, 'Sequence ready. Fullscreen 60fps scrolling active.');
         setTimeout(() => {
           this.loader.classList.add('hidden');
           document.body.classList.remove('loading-state');
@@ -301,9 +298,8 @@ class ScrollCanvasSequence {
         this.drawFrame(drawIndex);
       }
 
-      // Update HUD and narrative
+      // Update HUD
       this.updateHUD(scrollFraction, drawIndex);
-      this.updateNarrativeCards(scrollFraction);
     }
 
     this.lastFrameTime = now;
@@ -333,21 +329,6 @@ class ScrollCanvasSequence {
       if (this.scrubFill) this.scrubFill.style.width = `${scrubPercent}%`;
       if (this.scrubThumb) this.scrubThumb.style.left = `${scrubPercent}%`;
     }
-  }
-
-  /**
-   * Sync active narrative story card based on current scroll milestone
-   */
-  updateNarrativeCards(scrollFraction) {
-    this.storyCards.forEach((card) => {
-      const start = parseFloat(card.dataset.start);
-      const end = parseFloat(card.dataset.end);
-      if (scrollFraction >= start && scrollFraction <= end) {
-        card.classList.add('active');
-      } else {
-        card.classList.remove('active');
-      }
-    });
   }
 
   /**
@@ -416,10 +397,10 @@ class ScrollCanvasSequence {
   setupEventListeners() {
     window.addEventListener('resize', () => this.resizeCanvas());
 
-    // Fit button (contain vs cover)
+    // Fit button (cover vs contain)
     this.btnFit.addEventListener('click', () => {
-      this.fitMode = this.fitMode === 'contain' ? 'cover' : 'contain';
-      this.fitLabel.textContent = this.fitMode === 'contain' ? 'Contain' : 'Cover';
+      this.fitMode = this.fitMode === 'cover' ? 'contain' : 'cover';
+      this.fitLabel.textContent = this.fitMode === 'cover' ? 'Cover' : 'Contain';
       this.drawFrame(Math.round(this.displayedFrame));
     });
 
@@ -432,18 +413,6 @@ class ScrollCanvasSequence {
 
     // Autoplay toggle
     this.btnAutoplay.addEventListener('click', () => this.toggleAutoplay());
-
-    // Rewind / scroll to top
-    if (this.btnRewind) {
-      this.btnRewind.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-    }
-
-    // Quick export from end card
-    if (this.btnExportQuick) {
-      this.btnExportQuick.addEventListener('click', () => this.openExportModal());
-    }
 
     // Media Modal
     this.btnCustomMedia.addEventListener('click', () => this.mediaModal.showModal());
